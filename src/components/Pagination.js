@@ -30,7 +30,7 @@ function Pagination({ startIndex, setStartIndex, endIndex, setEndIndex, totalEle
   };
 
   return (
-    <div className="w-full flex flex-wrap justify-center items-center">
+    <footer className="w-full flex flex-wrap justify-center items-center">
       <button
         onClick={goToFirstPage}
         disabled={startIndex === 0}
@@ -62,7 +62,7 @@ function Pagination({ startIndex, setStartIndex, endIndex, setEndIndex, totalEle
       >
         <IconChevronsRight size={25} strokeWidth={1.5} className="text-gray-600" />
       </button>
-    </div>
+    </footer>
   );
 }
 
