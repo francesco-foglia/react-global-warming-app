@@ -38,16 +38,16 @@ function PolarIce() {
           {
             label: 'Extent',
             data: extents,
-            backgroundColor: 'rgba(255, 99, 132, 0.5)',
-            borderColor: 'rgba(255, 99, 132, 1)',
+            backgroundColor: 'rgba(0, 123, 255, 0.5)',
+            borderColor: 'rgba(0, 123, 255, 1)',
             borderWidth: 1,
             fill: false
           },
           {
             label: 'Area',
             data: areas,
-            backgroundColor: 'rgba(0, 123, 255, 0.5)',
-            borderColor: 'rgba(0, 123, 255, 1)',
+            backgroundColor: 'rgba(255, 99, 132, 0.5)',
+            borderColor: 'rgba(255, 99, 132, 1)',
             borderWidth: 1,
             fill: false
           }
