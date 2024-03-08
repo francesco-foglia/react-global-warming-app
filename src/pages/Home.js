@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
 import Spinner from '../components/Spinner';
 import { getNavbarLinks } from "../utils/api";
+import BackgroundGlobalWarming from "../img/background-global-warming.webp";
 
 function Home() {
 
@@ -17,7 +18,7 @@ function Home() {
   return (
     <>
       {spinner && <Spinner />}
-      <div className="w-full h-screen bg-cover bg-center" style={{ backgroundImage: "url(https://global-warming.org/images/background-global-warming.webp)" }}>
+      <div className="w-full h-screen bg-cover bg-center" style={{ backgroundImage: "url(" + BackgroundGlobalWarming + ")" }}>
         <div className="w-full h-screen p-[5%] flex flex-col justify-center items-center bg-black bg-opacity-30 backdrop-blur-[1px]">
           <h1 className="text-4xl text-center text-white font-medium mt-[5%] mb-0" style={{ textShadow: "1.5px 1.5px #4b5563" }}>
             Global Warming and Climate Change
