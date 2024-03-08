@@ -113,7 +113,7 @@ function PolarIce() {
       <Navbar />
       <div className="w-full h-screen flex flex-col justify-between items-center py-[2.5%] px-[5%]">
 
-        <main className="w-full h-full flex justify-center items-center mx-auto mt-[50px] mb-5">
+        <main className="w-full h-full flex justify-center items-center mx-auto mt-[88px] min-[801px]:mt-[50px] mb-5">
           <canvas id="polarIceChart" className="canvas"></canvas>
         </main>
 
