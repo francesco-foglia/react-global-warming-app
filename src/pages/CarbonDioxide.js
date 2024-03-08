@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import Navbar from "../components/Navbar";
 import Pagination from "../components/Pagination";
+import Spinner from '../components/Spinner';
 import { getData } from "../utils/api";
 import Chart from 'chart.js/auto';
 
@@ -10,8 +11,10 @@ function CarbonDioxide() {
   const [totalElements, setTotalElements] = useState(0);
   const [startIndex, setStartIndex] = useState(0);
   const [endIndex, setEndIndex] = useState(numberElements);
+  const [spinner, setSpinner] = useState(true);
 
   const fetchData = useCallback(async (startIndex, endIndex) => {
+    setSpinner(true);
     try {
       const data = await getData("https://global-warming.org/api/co2-api");
 
@@ -94,6 +97,8 @@ function CarbonDioxide() {
         }
       });
 
+      setSpinner(false);
+
     } catch (error) {
       console.error("Errore nel recupero dei dati:", error);
     }
@@ -105,6 +110,7 @@ function CarbonDioxide() {
 
   return (
     <>
+      {spinner && <Spinner />}
       <Navbar />
       <main className="w-full h-screen flex flex-col justify-between items-center py-[2.5%] px-[5%]">
 
