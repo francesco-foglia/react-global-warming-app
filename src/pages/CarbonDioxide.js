@@ -28,17 +28,11 @@ function CarbonDioxide() {
       const cycleValues = [];
       const trendValues = [];
 
-      for (let i = 0; i < numberElements; i++) {
-        if (i < result.length) {
-          labels.push(`${result[i].day}/${result[i].month}/${result[i].year}`);
-          cycleValues.push(result[i].cycle);
-          trendValues.push(result[i].trend);
-        } else {
-          labels.push('');
-          cycleValues.push(null);
-          trendValues.push(null);
-        }
-      }
+      result.forEach(element => {
+        labels.push(`${element.day}/${element.month}/${element.year}`);
+        cycleValues.push(element.cycle);
+        trendValues.push(element.trend);
+      });
 
       const existingChartCanvas = document.getElementById('carbonDioxideChart');
 

@@ -28,17 +28,11 @@ function PolarIce() {
       const areas = [];
       const extents = [];
 
-      for (let i = 0; i < numberElements; i++) {
-        if (i < result.length) {
-          labels.push(`${result[i].month}/${result[i].year}`);
-          areas.push(result[i].area);
-          extents.push(result[i].extent);
-        } else {
-          labels.push('');
-          areas.push(null);
-          extents.push(null);
-        }
-      }
+      result.forEach((element) => {
+        labels.push(`${element.month}/${element.year}`);
+        areas.push(element.area);
+        extents.push(element.extent);
+      });
 
       const existingChartCanvas = document.getElementById('polarIceChart');
 

@@ -28,17 +28,11 @@ function NitrousOxide() {
       const averages = [];
       const trends = [];
 
-      for (let i = 0; i < numberElements; i++) {
-        if (i < result.length) {
-          labels.push(`${parseInt(result[i].date).toFixed(0)}`);
-          averages.push(result[i].average);
-          trends.push(result[i].trend);
-        } else {
-          labels.push('');
-          averages.push(null);
-          trends.push(null);
-        }
-      }
+      result.forEach(element => {
+        labels.push(`${parseInt(element.date).toFixed(0)}`);
+        averages.push(element.average);
+        trends.push(element.trend);
+      });
 
       const existingChartCanvas = document.getElementById('nitrousOxideChart');
 

@@ -28,17 +28,11 @@ function Temperature() {
       const stationData = [];
       const landData = [];
 
-      for (let i = 0; i < numberElements; i++) {
-        if (i < result.length) {
-          labels.push(`${parseInt(result[i].time).toFixed(0)}`);
-          stationData.push(result[i].station);
-          landData.push(result[i].land);
-        } else {
-          labels.push('');
-          stationData.push(null);
-          landData.push(null);
-        }
-      }
+      result.forEach((item) => {
+        labels.push(`${parseInt(item.time).toFixed(0)}`);
+        stationData.push(item.station);
+        landData.push(item.land);
+      });
 
       const existingChartCanvas = document.getElementById('temperatureChart');
 

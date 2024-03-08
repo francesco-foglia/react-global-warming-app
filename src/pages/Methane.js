@@ -28,17 +28,11 @@ function Methane() {
       const averages = [];
       const trends = [];
 
-      for (let i = 0; i < numberElements; i++) {
-        if (i < result.length) {
-          dates.push(`${parseInt(result[i].date).toFixed(0)}`);
-          averages.push(result[i].average);
-          trends.push(result[i].trend);
-        } else {
-          dates.push('');
-          averages.push(null);
-          trends.push(null);
-        }
-      }
+      result.forEach(element => {
+        dates.push(`${parseInt(element.date).toFixed(0)}`);
+        averages.push(element.average);
+        trends.push(element.trend);
+      });
 
       const existingChartCanvas = document.getElementById('methaneChart');
 
