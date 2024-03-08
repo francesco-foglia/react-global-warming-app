@@ -24,6 +24,10 @@ function Navbar() {
     {
       path: "/polar-ice",
       name: "Polar Ice",
+    },
+    {
+      path: "/ocean-warming",
+      name: "Ocean Warming",
     }
   ];
 

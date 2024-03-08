@@ -12,6 +12,7 @@ function NitrousOxide() {
   const [startIndex, setStartIndex] = useState(0);
   const [endIndex, setEndIndex] = useState(numberElements);
   const [spinner, setSpinner] = useState(true);
+  const [chartData, setChartData] = useState(null);
 
   const fetchData = useCallback(async (startIndex, endIndex) => {
     setSpinner(true);
@@ -24,16 +25,45 @@ function NitrousOxide() {
       setTotalElements(totalElements);
       const result = data.nitrous.slice(startIndex, endIndex);
 
-      const labels = [];
-      const averages = [];
-      const trends = [];
+      const labels = result.map(element => element.date);
+      const averages = result.map(element => element.average);
+      const trends = result.map(element => element.trend);
 
-      result.forEach(element => {
-        labels.push(`${parseInt(element.date).toFixed(0)}`);
-        averages.push(element.average);
-        trends.push(element.trend);
+      setChartData({
+        labels: labels,
+        datasets: [
+          {
+            label: 'Average',
+            data: averages,
+            backgroundColor: 'rgba(0, 123, 255, 0.5)',
+            borderColor: 'rgba(0, 123, 255, 1)',
+            borderWidth: 1,
+            fill: false
+          },
+          {
+            label: 'Trend',
+            data: trends,
+            backgroundColor: 'rgba(255, 99, 132, 0.5)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 1,
+            fill: false
+          }
+        ]
       });
 
+      setSpinner(false);
+
+    } catch (error) {
+      console.error("Errore nel recupero dei dati:", error);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchData(startIndex, endIndex);
+  }, [fetchData, startIndex, endIndex]);
+
+  useEffect(() => {
+    if (chartData) {
       const existingChartCanvas = document.getElementById('nitrousOxideChart');
 
       if (existingChartCanvas && Chart.getChart(existingChartCanvas)) {
@@ -43,33 +73,13 @@ function NitrousOxide() {
       const ctx = existingChartCanvas.getContext('2d');
       new Chart(ctx, {
         type: 'line',
-        data: {
-          labels: labels,
-          datasets: [
-            {
-              label: 'Average',
-              data: averages,
-              backgroundColor: 'rgba(0, 123, 255, 0.5)',
-              borderColor: 'rgba(0, 123, 255, 1)',
-              borderWidth: 1,
-              fill: false
-            },
-            {
-              label: 'Trend',
-              data: trends,
-              backgroundColor: 'rgba(255, 99, 132, 0.5)',
-              borderColor: 'rgba(255, 99, 132, 1)',
-              borderWidth: 1,
-              fill: false
-            }
-          ]
-        },
+        data: chartData,
         options: {
           responsive: true,
           plugins: {
             title: {
               display: true,
-              text: 'Nitrous Oxide'
+              text: 'Nitrous Oxide levels'
             }
           },
           scales: {
@@ -84,23 +94,14 @@ function NitrousOxide() {
               display: true,
               title: {
                 display: true,
-                text: 'Nitrous Oxide (ppb)'
+                text: 'Nitrous Oxide mole fraction (ppb)'
               }
             }
           }
         }
       });
-
-      setSpinner(false);
-
-    } catch (error) {
-      console.error("Errore nel recupero dei dati:", error);
     }
-  }, []);
-
-  useEffect(() => {
-    fetchData(startIndex, endIndex);
-  }, [fetchData, startIndex, endIndex]);
+  }, [chartData]);
 
   return (
     <>
@@ -118,7 +119,6 @@ function NitrousOxide() {
           endIndex={endIndex}
           setEndIndex={setEndIndex}
           totalElements={totalElements}
-          fetchData={fetchData}
           numberElements={numberElements}
         />
 

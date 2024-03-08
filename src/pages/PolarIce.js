@@ -12,6 +12,7 @@ function PolarIce() {
   const [startIndex, setStartIndex] = useState(0);
   const [endIndex, setEndIndex] = useState(numberElements);
   const [spinner, setSpinner] = useState(true);
+  const [chartData, setChartData] = useState(null);
 
   const fetchData = useCallback(async (startIndex, endIndex) => {
     setSpinner(true);
@@ -24,71 +25,30 @@ function PolarIce() {
       setTotalElements(totalElements);
       const result = data.arcticData.slice(startIndex, endIndex);
 
-      const labels = [];
-      const areas = [];
-      const extents = [];
+      const labels = result.map(element => `${element.year}/${element.month}`);
+      const areas = result.map(element => element.area);
+      const extents = result.map(element => element.extent);
 
-      result.forEach((element) => {
-        labels.push(`${element.month}/${element.year}`);
-        areas.push(element.area);
-        extents.push(element.extent);
-      });
-
-      const existingChartCanvas = document.getElementById('polarIceChart');
-
-      if (existingChartCanvas && Chart.getChart(existingChartCanvas)) {
-        Chart.getChart(existingChartCanvas).destroy();
-      }
-
-      const ctx = existingChartCanvas.getContext('2d');
-      new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: labels,
-          datasets: [
-            {
-              label: 'Areas',
-              data: areas,
-              backgroundColor: 'rgba(0, 123, 255, 0.5)',
-              borderColor: 'rgba(0, 123, 255, 1)',
-              borderWidth: 1,
-              fill: false
-            },
-            {
-              label: 'Extents',
-              data: extents,
-              backgroundColor: 'rgba(255, 99, 132, 0.5)',
-              borderColor: 'rgba(255, 99, 132, 1)',
-              borderWidth: 1,
-              fill: false
-            }
-          ]
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            title: {
-              display: true,
-              text: 'Polar Ice'
-            }
+      setChartData({
+        labels: labels,
+        datasets: [
+          {
+            label: 'Extent',
+            data: extents,
+            backgroundColor: 'rgba(255, 99, 132, 0.5)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 1,
+            fill: false
           },
-          scales: {
-            x: {
-              display: true,
-              title: {
-                display: true,
-                text: 'Month/Year'
-              }
-            },
-            y: {
-              display: true,
-              title: {
-                display: true,
-                text: 'Polar Ice (10^6 km^2)'
-              }
-            }
+          {
+            label: 'Area',
+            data: areas,
+            backgroundColor: 'rgba(0, 123, 255, 0.5)',
+            borderColor: 'rgba(0, 123, 255, 1)',
+            borderWidth: 1,
+            fill: false
           }
-        }
+        ]
       });
 
       setSpinner(false);
@@ -101,6 +61,51 @@ function PolarIce() {
   useEffect(() => {
     fetchData(startIndex, endIndex);
   }, [fetchData, startIndex, endIndex]);
+
+  useEffect(() => {
+    if (chartData) {
+      const existingChartCanvas = document.getElementById('polarIceChart');
+
+      if (existingChartCanvas && Chart.getChart(existingChartCanvas)) {
+        Chart.getChart(existingChartCanvas).destroy();
+      }
+
+      const ctx = existingChartCanvas.getContext('2d');
+      new Chart(ctx, {
+        type: 'line',
+        data: chartData,
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              display: true,
+              position: 'top',
+            },
+            title: {
+              display: true,
+              text: 'Melted Polar Ice Caps'
+            }
+          },
+          scales: {
+            x: {
+              display: true,
+              title: {
+                display: true,
+                text: 'Year'
+              }
+            },
+            y: {
+              display: true,
+              title: {
+                display: true,
+                text: 'Million square km'
+              }
+            }
+          }
+        }
+      });
+    }
+  }, [chartData]);
 
   return (
     <>

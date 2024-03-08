@@ -5,9 +5,9 @@ import Spinner from '../components/Spinner';
 import { getData } from "../utils/api";
 import Chart from 'chart.js/auto';
 
-function Temperature() {
+function OceanWarming() {
 
-  const numberElements = 19;
+  const numberElements = 16;
   const [totalElements, setTotalElements] = useState(0);
   const [startIndex, setStartIndex] = useState(0);
   const [endIndex, setEndIndex] = useState(numberElements);
@@ -17,34 +17,25 @@ function Temperature() {
   const fetchData = useCallback(async (startIndex, endIndex) => {
     setSpinner(true);
     try {
-      const data = await getData("https://global-warming.org/api/temperature-api");
+      const data = await getData("https://global-warming.org/api/ocean-warming-api");
 
       console.log(data);
 
-      const totalElements = data.result.length;
+      const totalElements = Object.keys(data.result).length;
       setTotalElements(totalElements);
-      const result = data.result.slice(startIndex, endIndex);
+      const result = Object.entries(data.result).slice(startIndex, endIndex);
 
-      const labels = result.map(item => item.time);
-      const stationData = result.map(item => item.station);
-      const landData = result.map(item => item.land);
+      const labels = result.map(([year, _]) => year);
+      const values = result.map(([_, anomaly]) => parseFloat(anomaly));
 
       setChartData({
         labels: labels,
         datasets: [
           {
-            label: 'Station',
-            data: stationData,
+            label: 'Ocean Warming',
+            data: values,
             backgroundColor: 'rgba(0, 123, 255, 0.5)',
             borderColor: 'rgba(0, 123, 255, 1)',
-            borderWidth: 1,
-            fill: false
-          },
-          {
-            label: 'Land',
-            data: landData,
-            backgroundColor: 'rgba(255, 99, 132, 0.5)',
-            borderColor: 'rgba(255, 99, 132, 1)',
             borderWidth: 1,
             fill: false
           }
@@ -64,7 +55,7 @@ function Temperature() {
 
   useEffect(() => {
     if (chartData) {
-      const existingChartCanvas = document.getElementById('temperatureChart');
+      const existingChartCanvas = document.getElementById('oceanWarmingChart');
 
       if (existingChartCanvas && Chart.getChart(existingChartCanvas)) {
         Chart.getChart(existingChartCanvas).destroy();
@@ -79,7 +70,7 @@ function Temperature() {
           plugins: {
             title: {
               display: true,
-              text: 'Global temperature anomalies'
+              text: 'Global Ocean Temperature Anomalies'
             }
           },
           scales: {
@@ -110,7 +101,7 @@ function Temperature() {
       <main className="w-full h-screen flex flex-col justify-between items-center py-[2.5%] px-[5%]">
 
         <div className="w-full h-full flex justify-center items-center mx-auto mt-[50px] mb-5">
-          <canvas id="temperatureChart" className="canvas"></canvas>
+          <canvas id="oceanWarmingChart" className="canvas"></canvas>
         </div>
 
         <Pagination
@@ -127,4 +118,4 @@ function Temperature() {
   );
 }
 
-export default Temperature;
+export default OceanWarming;

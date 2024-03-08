@@ -7,11 +7,12 @@ import Chart from 'chart.js/auto';
 
 function CarbonDioxide() {
 
-  const numberElements = 15;
+  const numberElements = 16;
   const [totalElements, setTotalElements] = useState(0);
   const [startIndex, setStartIndex] = useState(0);
   const [endIndex, setEndIndex] = useState(numberElements);
   const [spinner, setSpinner] = useState(true);
+  const [chartData, setChartData] = useState(null);
 
   const fetchData = useCallback(async (startIndex, endIndex) => {
     setSpinner(true);
@@ -24,71 +25,30 @@ function CarbonDioxide() {
       setTotalElements(totalElements);
       const result = data.co2.slice(startIndex, endIndex);
 
-      const labels = [];
-      const cycleValues = [];
-      const trendValues = [];
+      const labels = result.map(element => `${element.year}/${element.month}/${element.day}`);
+      const cycleValues = result.map(element => element.cycle);
+      const trendValues = result.map(element => element.trend);
 
-      result.forEach(element => {
-        labels.push(`${element.day}/${element.month}/${element.year}`);
-        cycleValues.push(element.cycle);
-        trendValues.push(element.trend);
-      });
-
-      const existingChartCanvas = document.getElementById('carbonDioxideChart');
-
-      if (existingChartCanvas && Chart.getChart(existingChartCanvas)) {
-        Chart.getChart(existingChartCanvas).destroy();
-      }
-
-      const ctx = existingChartCanvas.getContext('2d');
-      new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: labels,
-          datasets: [
-            {
-              label: 'Cycle',
-              data: cycleValues,
-              backgroundColor: 'rgba(0, 123, 255, 0.5)',
-              borderColor: 'rgba(0, 123, 255, 1)',
-              borderWidth: 1,
-              fill: false
-            },
-            {
-              label: 'Trend',
-              data: trendValues,
-              backgroundColor: 'rgba(255, 99, 132, 0.5)',
-              borderColor: 'rgba(255, 99, 132, 1)',
-              borderWidth: 1,
-              fill: false
-            }
-          ],
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            title: {
-              display: true,
-              text: 'Carbon Dioxide'
-            }
+      setChartData({
+        labels: labels,
+        datasets: [
+          {
+            label: 'Cycle',
+            data: cycleValues,
+            backgroundColor: 'rgba(0, 123, 255, 0.5)',
+            borderColor: 'rgba(0, 123, 255, 1)',
+            borderWidth: 1,
+            fill: false
           },
-          scales: {
-            x: {
-              display: true,
-              title: {
-                display: true,
-                text: 'Date'
-              }
-            },
-            y: {
-              display: true,
-              title: {
-                display: true,
-                text: 'Carbon Dioxide (ppm)'
-              }
-            }
+          {
+            label: 'Trend',
+            data: trendValues,
+            backgroundColor: 'rgba(255, 99, 132, 0.5)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 1,
+            fill: false
           }
-        }
+        ],
       });
 
       setSpinner(false);
@@ -101,6 +61,47 @@ function CarbonDioxide() {
   useEffect(() => {
     fetchData(startIndex, endIndex);
   }, [fetchData, startIndex, endIndex]);
+
+  useEffect(() => {
+    if (chartData) {
+      const existingChartCanvas = document.getElementById('carbonDioxideChart');
+
+      if (existingChartCanvas && Chart.getChart(existingChartCanvas)) {
+        Chart.getChart(existingChartCanvas).destroy();
+      }
+
+      const ctx = existingChartCanvas.getContext('2d');
+      new Chart(ctx, {
+        type: 'line',
+        data: chartData,
+        options: {
+          responsive: true,
+          plugins: {
+            title: {
+              display: true,
+              text: 'Carbon Dioxide levels'
+            }
+          },
+          scales: {
+            x: {
+              display: true,
+              title: {
+                display: true,
+                text: 'Year'
+              }
+            },
+            y: {
+              display: true,
+              title: {
+                display: true,
+                text: 'PartPer million (ppm)'
+              }
+            }
+          }
+        }
+      });
+    }
+  }, [chartData]);
 
   return (
     <>

@@ -5,6 +5,7 @@ import CarbonDioxide from './pages/CarbonDioxide';
 import Methane from './pages/Methane';
 import NitrousOxide from './pages/NitrousOxide';
 import PolarIce from './pages/PolarIce';
+import OceanWarming from './pages/OceanWarming';
 
 function App() {
 
@@ -33,6 +34,11 @@ function App() {
       path: "/polar-ice",
       name: "PolarIce",
       component: PolarIce
+    },
+    {
+      path: "/ocean-warming",
+      name: "OceanWarming",
+      component: OceanWarming
     }
   ];
 
