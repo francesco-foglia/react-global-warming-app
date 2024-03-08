@@ -32,13 +32,15 @@ function Navbar() {
   ];
 
   return (
-    <div className="w-full min-h-[50px] flex flex-wrap justify-center items-center fixed top-0 left-0 z-[1] bg-gray-200">
-      {navbarLinks.map((link) => (
-        <Link key={link.name} to={link.path} className={`${location.pathname === link.path ? "underline" : ""} m-2`}>
-          {link.name}
-        </Link>
-      ))}
-    </div>
+    <header className="w-full min-h-[50px] bg-gray-200">
+      <nav className="2xl:container w-full min-h-[50px] mx-auto px-[5%] flex flex-wrap justify-center sm:justify-between items-center">
+        {navbarLinks.map((link) => (
+          <Link key={link.name} to={link.path} className={`${location.pathname === link.path ? "underline" : ""} m-2`}>
+            {link.name}
+          </Link>
+        ))}
+      </nav>
+    </header>
   );
 }
 
