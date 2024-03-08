@@ -3,6 +3,7 @@ import { Helmet } from "react-helmet";
 
 import Navbar from "../components/Navbar";
 import Pagination from "../components/Pagination";
+import ErrorMessage from '../components/ErrorMessage';
 import Spinner from '../components/Spinner';
 
 import { getData } from "../utils/api";
@@ -16,13 +17,12 @@ function PolarIce() {
   const [endIndex, setEndIndex] = useState(numberElements);
   const [spinner, setSpinner] = useState(true);
   const [chartData, setChartData] = useState(null);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const fetchData = useCallback(async (startIndex, endIndex) => {
     setSpinner(true);
     try {
       const data = await getData("https://global-warming.org/api/arctic-api");
-
-      console.log(data);
 
       const totalElements = data.arcticData.length;
       setTotalElements(totalElements);
@@ -57,7 +57,8 @@ function PolarIce() {
       setSpinner(false);
 
     } catch (error) {
-      console.error("Errore nel recupero dei dati:", error);
+      setErrorMessage("Error retrieving data. Try later.");
+      setSpinner(false);
     }
   }, []);
 
@@ -122,18 +123,24 @@ function PolarIce() {
 
       <div className="w-full h-screen flex flex-col justify-between items-center py-[2.5%] px-[5%]">
 
-        <main className="w-full h-full flex justify-center items-center mx-auto mt-[88px] min-[801px]:mt-[50px] mb-5">
-          <canvas id="polarIceChart" className="canvas"></canvas>
-        </main>
+        {!errorMessage && (
+          <>
+            <main className="w-full h-full flex justify-center items-center mx-auto mt-[88px] min-[801px]:mt-[50px] mb-5">
+              <canvas id="polarIceChart" className="canvas"></canvas>
+            </main>
 
-        <Pagination
-          startIndex={startIndex}
-          setStartIndex={setStartIndex}
-          endIndex={endIndex}
-          setEndIndex={setEndIndex}
-          totalElements={totalElements}
-          numberElements={numberElements}
-        />
+            <Pagination
+              startIndex={startIndex}
+              setStartIndex={setStartIndex}
+              endIndex={endIndex}
+              setEndIndex={setEndIndex}
+              totalElements={totalElements}
+              numberElements={numberElements}
+            />
+          </>
+        )}
+
+        {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
 
       </div>
     </>
