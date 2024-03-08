@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { getNavbarLinks } from "./utils/api";
+import { getNavbarLinks } from "./utils/utils";
 
 function App() {
 

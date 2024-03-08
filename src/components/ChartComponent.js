@@ -6,7 +6,7 @@ import Pagination from "../components/Pagination";
 import ErrorMessage from '../components/ErrorMessage';
 import Spinner from '../components/Spinner';
 
-import { getData } from "../utils/api";
+import { getData } from "../utils/utils";
 import Chart from 'chart.js/auto';
 
 function ChartComponent({ url, labelsData, data1, data2, chartTitle, axis1, axis2, pageTitle, chartId }) {

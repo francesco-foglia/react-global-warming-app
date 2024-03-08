@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { Collapse } from 'react-collapse';
 
 import { IconMenu2, IconX } from '@tabler/icons-react';
-import { getNavbarLinks } from "../utils/api";
+import { getNavbarLinks } from "../utils/utils";
 
 function Navbar({ collapsed, setCollapsed }) {
 

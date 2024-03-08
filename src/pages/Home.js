@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Helmet } from "react-helmet";
 
 import Spinner from '../components/Spinner';
-import { getNavbarLinks } from "../utils/api";
+import { getNavbarLinks } from "../utils/utils";
 import BackgroundGlobalWarming from "../img/background-global-warming.webp";
 
 function Home() {
