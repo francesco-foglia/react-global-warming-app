@@ -1,18 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Collapse } from 'react-collapse';
 
 import { IconMenu2, IconX } from '@tabler/icons-react';
 import { getNavbarLinks } from "../utils/api";
 
-function Navbar() {
+function Navbar({ collapsed, setCollapsed }) {
 
   const location = useLocation();
   const navbarLinks = getNavbarLinks();
-  const [collapsed, setCollapsed] = useState(false);
 
   return (
-    <header className="w-full min-h-[50px] bg-gray-200 fixed top-0 left-0">
+    <header className="w-full min-h-[50px] bg-gray-200 fixed top-0 left-0 z-[1]">
 
       <div className="lg:hidden w-full h-[50px] px-[5%] flex justify-start items-center">
         <button onClick={() => setCollapsed(!collapsed)}>

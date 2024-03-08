@@ -18,6 +18,7 @@ function CarbonDioxide() {
   const [spinner, setSpinner] = useState(true);
   const [chartData, setChartData] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
+  const [collapsed, setCollapsed] = useState(false);
 
   const fetchData = useCallback(async (startIndex, endIndex) => {
     setSpinner(true);
@@ -116,9 +117,9 @@ function CarbonDioxide() {
 
       {spinner && <Spinner />}
 
-      <Navbar />
+      <Navbar collapsed={collapsed} setCollapsed={setCollapsed} />
 
-      <div className="2xl:container mx-auto w-full h-screen flex flex-col justify-between items-center py-[2.5%] px-[5%]">
+      <div className={`${collapsed ? "pointer-events-none opacity-70 lg:pointer-events-auto lg:opacity-100" : ""} 2xl:container mx-auto w-full h-screen flex flex-col justify-between items-center py-[2.5%] px-[5%] transition-all duration-300 ease-in-out`}>
 
         {!errorMessage && (
           <>
