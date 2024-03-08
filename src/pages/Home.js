@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
+import { Helmet } from "react-helmet";
+
 import Spinner from '../components/Spinner';
 import { getNavbarLinks } from "../utils/api";
 import BackgroundGlobalWarming from "../img/background-global-warming.webp";
@@ -17,7 +19,12 @@ function Home() {
 
   return (
     <>
+      <Helmet>
+        <title>Global Warming</title>
+      </Helmet>
+
       {spinner && <Spinner />}
+
       <div className="w-full h-screen bg-cover bg-center" style={{ backgroundImage: "url(" + BackgroundGlobalWarming + ")" }}>
         <div className="w-full h-screen p-[5%] flex flex-col justify-center items-center bg-black bg-opacity-30 backdrop-blur-[1px]">
           <Link to="https://global-warming.org/" target="_blank" rel="noopener noreferrer nofollow">

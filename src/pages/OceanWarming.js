@@ -1,7 +1,10 @@
 import React, { useState, useEffect, useCallback } from "react";
+import { Helmet } from "react-helmet";
+
 import Navbar from "../components/Navbar";
 import Pagination from "../components/Pagination";
 import Spinner from '../components/Spinner';
+
 import { getData } from "../utils/api";
 import Chart from 'chart.js/auto';
 
@@ -96,8 +99,14 @@ function OceanWarming() {
 
   return (
     <>
+      <Helmet>
+        <title>Ocean Warming | Global Warming</title>
+      </Helmet>
+
       {spinner && <Spinner />}
+
       <Navbar />
+
       <div className="w-full h-screen flex flex-col justify-between items-center py-[2.5%] px-[5%]">
 
         <main className="w-full h-full flex justify-center items-center mx-auto mt-[88px] min-[801px]:mt-[50px] mb-5">
