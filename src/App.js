@@ -8,15 +8,46 @@ import NitrousOxide from './pages/NitrousOxide';
 import PolarIce from './pages/PolarIce';
 
 function App() {
+
+  const navbarLinks = [
+    {
+      path: "/",
+      name: "Home",
+      component: Home
+    },
+    {
+      path: "/temperature",
+      name: "Temperature",
+      component: Temperature
+    },
+    {
+      path: "/carbon-dioxide",
+      name: "CarbonDioxide",
+      component: CarbonDioxide
+    },
+    {
+      path: "/methane",
+      name: "Methane",
+      component: Methane
+    },
+    {
+      path: "/nitrous-oxide",
+      name: "NitrousOxide",
+      component: NitrousOxide
+    },
+    {
+      path: "/polar-ice",
+      name: "PolarIce",
+      component: PolarIce
+    }
+  ];
+
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/temperature" element={<Temperature />} />
-        <Route path="/carbon-dioxide" element={<CarbonDioxide />} />
-        <Route path="/methane" element={<Methane />} />
-        <Route path="/nitrous-oxide" element={<NitrousOxide />} />
-        <Route path="/polar-ice" element={<PolarIce />} />
+        {navbarLinks.map((link) => (
+          <Route key={link.name} path={link.path} element={<link.component />} />
+        ))}
       </Routes>
     </BrowserRouter>
   );
