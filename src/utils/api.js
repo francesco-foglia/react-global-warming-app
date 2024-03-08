@@ -10,7 +10,18 @@ import OceanWarming from '../pages/OceanWarming';
 
 export async function getData(url) {
   const response = await axios.get(url);
-  return response.data;
+
+  if (response.data.result) {
+    return response.data.result;
+  } else if (response.data.co2) {
+    return response.data.co2;
+  } else if (response.data.methane) {
+    return response.data.methane;
+  } else if (response.data.nitrous) {
+    return response.data.nitrous;
+  } else if (response.data.arcticData) {
+    return response.data.arcticData;
+  }
 }
 
 export function getNavbarLinks() {

@@ -1,148 +1,20 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { Helmet } from "react-helmet";
-
-import Navbar from "../components/Navbar";
-import Pagination from "../components/Pagination";
-import ErrorMessage from '../components/ErrorMessage';
-import Spinner from '../components/Spinner';
-
-import { getData } from "../utils/api";
-import Chart from 'chart.js/auto';
+import ChartComponent from "../components/ChartComponent";
 
 function OceanWarming() {
 
-  const numberElements = 15;
-  const [totalElements, setTotalElements] = useState(0);
-  const [startIndex, setStartIndex] = useState(0);
-  const [endIndex, setEndIndex] = useState(numberElements);
-  const [spinner, setSpinner] = useState(true);
-  const [chartData, setChartData] = useState(null);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [collapsed, setCollapsed] = useState(false);
-
-  const fetchData = useCallback(async (startIndex, endIndex) => {
-    setSpinner(true);
-    try {
-      const data = await getData("https://global-warming.org/api/ocean-warming-api");
-
-      const totalElements = Object.keys(data.result).length;
-      setTotalElements(totalElements);
-      const result = Object.entries(data.result).slice(startIndex, endIndex);
-
-      const labels = [];
-      const values = [];
-
-      for (let i = 0; i < numberElements; i++) {
-        if (i < result.length) {
-          labels.push(result[i][0]);
-          values.push(result[i][1]);
-        } else {
-          labels.push('');
-          values.push(null);
-        }
-      }
-
-      setChartData({
-        labels: labels,
-        datasets: [
-          {
-            label: 'Ocean Warming',
-            data: values,
-            backgroundColor: 'rgba(0, 123, 255, 0.5)',
-            borderColor: 'rgba(0, 123, 255, 1)',
-            borderWidth: 1,
-            fill: false
-          }
-        ]
-      });
-
-      setSpinner(false);
-
-    } catch (error) {
-      setErrorMessage("Error retrieving data. Try later.");
-      setSpinner(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchData(startIndex, endIndex);
-  }, [fetchData, startIndex, endIndex]);
-
-  useEffect(() => {
-    if (chartData) {
-      const existingChartCanvas = document.getElementById('oceanWarmingChart');
-
-      if (existingChartCanvas && Chart.getChart(existingChartCanvas)) {
-        Chart.getChart(existingChartCanvas).destroy();
-      }
-
-      const ctx = existingChartCanvas.getContext('2d');
-      new Chart(ctx, {
-        type: 'line',
-        data: chartData,
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            title: {
-              display: true,
-              text: 'Global Ocean Temperature Anomalies'
-            }
-          },
-          scales: {
-            x: {
-              display: true,
-              title: {
-                display: true,
-                text: 'Year'
-              }
-            },
-            y: {
-              display: true,
-              title: {
-                display: true,
-                text: 'Celsius'
-              }
-            }
-          }
-        }
-      });
-    }
-  }, [chartData]);
-
   return (
-    <>
-      <Helmet>
-        <title>Ocean Warming | Global Warming</title>
-      </Helmet>
-
-      {spinner && <Spinner />}
-
-      <Navbar collapsed={collapsed} setCollapsed={setCollapsed} />
-
-      <div className={`${collapsed ? "pointer-events-none opacity-70 lg:pointer-events-auto lg:opacity-100" : ""} 2xl:container mx-auto w-full h-screen flex flex-col justify-between items-center py-[2.5%] px-[5%] transition-all duration-300 ease-in-out`}>
-
-        {!errorMessage && (
-          <>
-            <main className="w-full h-full min-h-[200px] flex justify-center items-center mx-auto mt-[50px] mb-5">
-              <canvas id="oceanWarmingChart" className="canvas"></canvas>
-            </main>
-
-            <Pagination
-              startIndex={startIndex}
-              setStartIndex={setStartIndex}
-              endIndex={endIndex}
-              setEndIndex={setEndIndex}
-              totalElements={totalElements}
-              numberElements={numberElements}
-            />
-          </>
-        )}
-
-        {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
-
-      </div>
-    </>
+    <ChartComponent
+      url="https://global-warming.org/api/ocean-warming-api"
+      labelsData={["0"]}
+      data1="1"
+      data2={null}
+      chartTitle="Global Ocean Temperature Anomalies"
+      axis1="Year"
+      axis2="Celsius"
+      pageTitle="Ocean Warming"
+      chartId="oceanWarmingChart"
+      label="Ocean Warming"
+    />
   );
 }
 
