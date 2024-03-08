@@ -35,7 +35,7 @@ function CarbonDioxide() {
 
       for (let i = 0; i < numberElements; i++) {
         if (i < result.length) {
-          labels.push(`${result[i].day}/${result[i].month}/${result[i].year}`);
+          labels.push(`${result[i].year}/${result[i].month}/${result[i].day}`);
           cycleValues.push(result[i].cycle);
           trendValues.push(result[i].trend);
         } else {

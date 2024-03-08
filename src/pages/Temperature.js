@@ -35,7 +35,7 @@ function Temperature() {
 
       for (let i = 0; i < numberElements; i++) {
         if (i < result.length) {
-          labels.push(`${parseInt(result[i].time).toFixed(0)}`);
+          labels.push(result[i].time);
           stationData.push(result[i].station);
           landData.push(result[i].land);
         } else {

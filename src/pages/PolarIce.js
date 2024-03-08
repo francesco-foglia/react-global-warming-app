@@ -35,7 +35,7 @@ function PolarIce() {
 
       for (let i = 0; i < numberElements; i++) {
         if (i < result.length) {
-          labels.push(`${result[i].month}/${result[i].year}`);
+          labels.push(`${result[i].year}/${result[i].month}`);
           areas.push(result[i].area);
           extents.push(result[i].extent);
         } else {

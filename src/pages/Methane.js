@@ -35,7 +35,7 @@ function Methane() {
 
       for (let i = 0; i < numberElements; i++) {
         if (i < result.length) {
-          labels.push(`${parseInt(result[i].date).toFixed(0)}`);
+          labels.push(result[i].date);
           averages.push(result[i].average);
           trends.push(result[i].trend);
         } else {
