@@ -1,24 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
+import Home from './pages/Home';
+import Temperature from './pages/Temperature';
+import CarbonDioxide from './pages/CarbonDioxide';
+import Methane from './pages/Methane';
+import NitrousOxide from './pages/NitrousOxide';
+import PolarIce from './pages/PolarIce';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/temperature" element={<Temperature />} />
+        <Route path="/carbon-dioxide" element={<CarbonDioxide />} />
+        <Route path="/methane" element={<Methane />} />
+        <Route path="/nitrous-oxide" element={<NitrousOxide />} />
+        <Route path="/polar-ice" element={<PolarIce />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
