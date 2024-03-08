@@ -35,7 +35,7 @@ function Navbar() {
     <header className="w-full min-h-[50px] bg-gray-200 fixed top-0 left-0">
       <nav className="2xl:container w-full min-h-[50px] mx-auto px-[5%] flex flex-wrap justify-center sm:justify-between items-center">
         {navbarLinks.map((link) => (
-          <Link key={link.name} to={link.path} className={`${location.pathname === link.path ? "underline" : ""} m-2`}>
+          <Link key={link.name} to={link.path} className={`${location.pathname === link.path ? "underline underline-offset-2" : ""} m-2 text-gray-600 font-medium`}>
             {link.name}
           </Link>
         ))}
