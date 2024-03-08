@@ -29,9 +29,21 @@ function PolarIce() {
       setTotalElements(totalElements);
       const result = data.arcticData.slice(startIndex, endIndex);
 
-      const labels = result.map(element => `${element.year}/${element.month}`);
-      const areas = result.map(element => element.area);
-      const extents = result.map(element => element.extent);
+      const labels = [];
+      const areas = [];
+      const extents = [];
+
+      for (let i = 0; i < numberElements; i++) {
+        if (i < result.length) {
+          labels.push(`${result[i].month}/${result[i].year}`);
+          areas.push(result[i].area);
+          extents.push(result[i].extent);
+        } else {
+          labels.push('');
+          areas.push(null);
+          extents.push(null);
+        }
+      }
 
       setChartData({
         labels: labels,

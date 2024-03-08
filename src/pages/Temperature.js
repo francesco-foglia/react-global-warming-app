@@ -11,7 +11,7 @@ import Chart from 'chart.js/auto';
 
 function Temperature() {
 
-  const numberElements = 19;
+  const numberElements = 15;
   const [totalElements, setTotalElements] = useState(0);
   const [startIndex, setStartIndex] = useState(0);
   const [endIndex, setEndIndex] = useState(numberElements);
@@ -29,9 +29,21 @@ function Temperature() {
       setTotalElements(totalElements);
       const result = data.result.slice(startIndex, endIndex);
 
-      const labels = result.map(item => item.time);
-      const stationData = result.map(item => item.station);
-      const landData = result.map(item => item.land);
+      const labels = [];
+      const stationData = [];
+      const landData = [];
+
+      for (let i = 0; i < numberElements; i++) {
+        if (i < result.length) {
+          labels.push(`${parseInt(result[i].time).toFixed(0)}`);
+          stationData.push(result[i].station);
+          landData.push(result[i].land);
+        } else {
+          labels.push('');
+          stationData.push(null);
+          landData.push(null);
+        }
+      }
 
       setChartData({
         labels: labels,

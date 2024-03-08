@@ -11,7 +11,7 @@ import Chart from 'chart.js/auto';
 
 function OceanWarming() {
 
-  const numberElements = 16;
+  const numberElements = 15;
   const [totalElements, setTotalElements] = useState(0);
   const [startIndex, setStartIndex] = useState(0);
   const [endIndex, setEndIndex] = useState(numberElements);
@@ -29,8 +29,18 @@ function OceanWarming() {
       setTotalElements(totalElements);
       const result = Object.entries(data.result).slice(startIndex, endIndex);
 
-      const labels = result.map(([year, _]) => year);
-      const values = result.map(([_, anomaly]) => parseFloat(anomaly));
+      const labels = [];
+      const values = [];
+
+      for (let i = 0; i < numberElements; i++) {
+        if (i < result.length) {
+          labels.push(result[i][0]);
+          values.push(result[i][1]);
+        } else {
+          labels.push('');
+          values.push(null);
+        }
+      }
 
       setChartData({
         labels: labels,

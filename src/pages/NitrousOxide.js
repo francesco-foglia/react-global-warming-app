@@ -11,7 +11,7 @@ import Chart from 'chart.js/auto';
 
 function NitrousOxide() {
 
-  const numberElements = 20;
+  const numberElements = 15;
   const [totalElements, setTotalElements] = useState(0);
   const [startIndex, setStartIndex] = useState(0);
   const [endIndex, setEndIndex] = useState(numberElements);
@@ -29,9 +29,21 @@ function NitrousOxide() {
       setTotalElements(totalElements);
       const result = data.nitrous.slice(startIndex, endIndex);
 
-      const labels = result.map(element => element.date);
-      const averages = result.map(element => element.average);
-      const trends = result.map(element => element.trend);
+      const labels = [];
+      const averages = [];
+      const trends = [];
+
+      for (let i = 0; i < numberElements; i++) {
+        if (i < result.length) {
+          labels.push(`${parseInt(result[i].date).toFixed(0)}`);
+          averages.push(result[i].average);
+          trends.push(result[i].trend);
+        } else {
+          labels.push('');
+          averages.push(null);
+          trends.push(null);
+        }
+      }
 
       setChartData({
         labels: labels,

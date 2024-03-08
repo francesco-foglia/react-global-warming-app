@@ -11,7 +11,7 @@ import Chart from 'chart.js/auto';
 
 function CarbonDioxide() {
 
-  const numberElements = 16;
+  const numberElements = 15;
   const [totalElements, setTotalElements] = useState(0);
   const [startIndex, setStartIndex] = useState(0);
   const [endIndex, setEndIndex] = useState(numberElements);
@@ -29,9 +29,21 @@ function CarbonDioxide() {
       setTotalElements(totalElements);
       const result = data.co2.slice(startIndex, endIndex);
 
-      const labels = result.map(element => `${element.year}/${element.month}/${element.day}`);
-      const cycleValues = result.map(element => element.cycle);
-      const trendValues = result.map(element => element.trend);
+      const labels = [];
+      const cycleValues = [];
+      const trendValues = [];
+
+      for (let i = 0; i < numberElements; i++) {
+        if (i < result.length) {
+          labels.push(`${result[i].day}/${result[i].month}/${result[i].year}`);
+          cycleValues.push(result[i].cycle);
+          trendValues.push(result[i].trend);
+        } else {
+          labels.push('');
+          cycleValues.push(null);
+          trendValues.push(null);
+        }
+      }
 
       setChartData({
         labels: labels,
