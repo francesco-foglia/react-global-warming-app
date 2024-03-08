@@ -1,6 +1,5 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
-import Home from './pages/Home';
 import Temperature from './pages/Temperature';
 import CarbonDioxide from './pages/CarbonDioxide';
 import Methane from './pages/Methane';
@@ -10,11 +9,6 @@ import PolarIce from './pages/PolarIce';
 function App() {
 
   const navbarLinks = [
-    {
-      path: "/",
-      name: "Home",
-      component: Home
-    },
     {
       path: "/temperature",
       name: "Temperature",
@@ -48,6 +42,8 @@ function App() {
         {navbarLinks.map((link) => (
           <Route key={link.name} path={link.path} element={<link.component />} />
         ))}
+        <Route path="/" element={<Navigate to="/temperature" />} />
+        <Route path="*" element={<Navigate to="/temperature" />} />
       </Routes>
     </BrowserRouter>
   );
