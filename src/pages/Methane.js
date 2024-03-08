@@ -1,29 +1,128 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Navbar from "../components/Navbar";
+import Pagination from "../components/Pagination";
 import { getData } from "../utils/api";
+import Chart from 'chart.js/auto';
 
 function Methane() {
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const data = await getData("https://global-warming.org/api/methane-api");
-        console.log(data);
-      } catch (error) {
-        console.error("Errore nel recupero dei dati:", error);
-      }
-    }
+  const numberElements = 18;
+  const [totalElements, setTotalElements] = useState(0);
+  const [startIndex, setStartIndex] = useState(0);
+  const [endIndex, setEndIndex] = useState(numberElements);
 
-    fetchData();
+  const fetchData = useCallback(async (startIndex, endIndex) => {
+    try {
+      const data = await getData("https://global-warming.org/api/methane-api");
+
+      console.log(data);
+
+      const totalElements = data.methane.length;
+      setTotalElements(totalElements);
+      const result = data.methane.slice(startIndex, endIndex);
+
+      const dates = [];
+      const averages = [];
+      const trends = [];
+
+      for (let i = 0; i < numberElements; i++) {
+        if (i < result.length) {
+          dates.push(`${parseInt(result[i].date).toFixed(0)}`);
+          averages.push(result[i].average);
+          trends.push(result[i].trend);
+        } else {
+          dates.push('');
+          averages.push(null);
+          trends.push(null);
+        }
+      }
+
+      const existingChartCanvas = document.getElementById('methaneChart');
+
+      if (existingChartCanvas && Chart.getChart(existingChartCanvas)) {
+        Chart.getChart(existingChartCanvas).destroy();
+      }
+
+      const ctx = existingChartCanvas.getContext('2d');
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: dates,
+          datasets: [
+            {
+              label: 'Average',
+              data: averages,
+              backgroundColor: 'rgba(0, 123, 255, 0.5)',
+              borderColor: 'rgba(0, 123, 255, 1)',
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: 'Trend',
+              data: trends,
+              backgroundColor: 'rgba(255, 99, 132, 0.5)',
+              borderColor: 'rgba(255, 99, 132, 1)',
+              borderWidth: 1,
+              fill: false
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            title: {
+              display: true,
+              text: 'Methane'
+            }
+          },
+          scales: {
+            x: {
+              display: true,
+              title: {
+                display: true,
+                text: 'Year'
+              }
+            },
+            y: {
+              display: true,
+              title: {
+                display: true,
+                text: 'Methane (ppb)'
+              }
+            }
+          }
+        }
+      });
+
+    } catch (error) {
+      console.error("Errore nel recupero dei dati:", error);
+    }
   }, []);
 
+  useEffect(() => {
+    fetchData(startIndex, endIndex);
+  }, [fetchData, startIndex, endIndex]);
+
   return (
-    <main>
+    <>
       <Navbar />
-      <div className="w-full h-screen flex justify-center items-center">
-        <h1>Methane</h1>
-      </div>
-    </main>
+      <main className="w-full h-screen flex flex-col justify-between items-center py-[2.5%] px-[5%]">
+
+        <div className="w-full h-full flex justify-center items-center mx-auto mt-[50px] mb-5">
+          <canvas id="methaneChart" className="canvas"></canvas>
+        </div>
+
+        <Pagination
+          startIndex={startIndex}
+          setStartIndex={setStartIndex}
+          endIndex={endIndex}
+          setEndIndex={setEndIndex}
+          totalElements={totalElements}
+          numberElements={numberElements}
+        />
+
+      </main>
+    </>
   );
 }
 
