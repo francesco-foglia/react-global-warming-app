@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Play:wght@400;700&display=swap');
+
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -5,7 +7,8 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  /* background-color: #242424; */
+  background-color: white;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -20,7 +23,7 @@ a {
 }
 
 a:hover {
-  color: #535bf2;
+  /* color: #535bf2; */
 }
 
 body {
@@ -28,7 +31,7 @@ body {
   display: flex;
   place-items: center;
   min-width: 320px;
-  min-height: 100vh;
+  min-height: 100dvh;
 }
 
 h1 {
@@ -49,12 +52,12 @@ button {
 }
 
 button:hover {
-  border-color: #646cff;
+  /* border-color: #646cff; */
 }
 
 button:focus,
 button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  /* outline: 4px auto -webkit-focus-ring-color; */
 }
 
 @media (prefers-color-scheme: light) {
@@ -64,7 +67,7 @@ button:focus-visible {
   }
 
   a:hover {
-    color: #747bff;
+    /* color: #747bff; */
   }
 
   button {
@@ -75,3 +78,39 @@ button:focus-visible {
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+html,
+body {
+  overflow-x: hidden;
+  font-family: 'Play', sans-serif;
+}
+
+.canvas {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.ReactCollapse--collapse {
+  transition: all 0.3s ease-in-out;
+}
+
+.loader {
+  width: 48px;
+  height: 48px;
+  border: 5px solid #4b5563;
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
